@@ -1,4 +1,4 @@
-# FCCI: Intelligent Fund Flow Tracking (IFFT) & AML Analyst Simulator
+# STAR: Spatial Temporal Automated Risk system
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-blue.svg" alt="Python Version"/>
@@ -10,7 +10,7 @@
 
 ## 🚀 Overview
 
-The **Financial Crime Compliance Intelligence (FCCI)** system is an advanced Intelligent Fund Flow Tracking (IFFT) platform and Anti-Money Laundering (AML) simulator. It represents a paradigm shift from legacy, siloed, and reactive enterprise compliance systems (e.g., standard rule-based scenarios) to **Contextual Proactive Intelligence**.
+The ** Spatial Temporal Automated Risk system(STAR)** system is an advanced Intelligent Fund Flow Tracking (IFFT) platform and Anti-Money Laundering (AML) simulator. It represents a paradigm shift from legacy, siloed, and reactive enterprise compliance systems (e.g., standard rule-based scenarios) to **Contextual Proactive Intelligence**.
 
 By integrating **Temporal Graph Neural Networks (TGNNs)**, real-time graph visualization via **Neo4j**, and an **Agentic AML Orchestrator** powered by **AWS Bedrock / LLMs**, FCCI automatically flags complex typologies—ranging from rapid layering to circular fund routing—while fully resolving evidence and drafting Suspicious Activity Reports (SARs) via AI.
 
