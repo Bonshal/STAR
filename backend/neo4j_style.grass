@@ -1,0 +1,85 @@
+/*
+  neo4j_style.grass — FCCI Demo Visual Style
+  ============================================
+  HOW TO LOAD:
+    1. Open Neo4j Browser at http://localhost:7474
+    2. Click the Settings gear icon (bottom-left sidebar)
+    3. Scroll to "Graph Style" → click "Load style"
+    4. Drag and drop this .grass file onto the upload area
+
+  COLOUR LEGEND:
+    ● Grey nodes       → Normal Person (no risk detected)
+    ● Red nodes        → Algorithmically flagged (risk_flag = true)
+    ● Crimson edges    → Flagged TRANSFER (risk_flag = true)
+    ─ Blue edges       → WIRE transfers
+    ─ Orange edges     → INTERNAL transfers
+    ─ Green edges      → CASH deposits
+    ─ Purple edges     → SWIFT transfers
+    ─ Grey edges       → POS / other
+*/
+
+node {
+  diameter: 60px;
+  color: #4A5568;
+  border-color: #2D3748;
+  border-width: 3px;
+  text-color-internal: #FFFFFF;
+  font-size: 12px;
+}
+
+node.Person {
+  caption: "{name}";
+  color: #4A5568;
+  border-color: #2D3748;
+}
+
+node.Person[risk_flag = "true"] {
+  color: #C53030;
+  border-color: #9B2C2C;
+  diameter: 75px;
+  font-size: 13px;
+  caption: "{name}\n⚠ {risk_type}";
+}
+
+relationship {
+  color: #718096;
+  shaft-width: 2px;
+  font-size: 10px;
+  padding: 3px;
+  text-color-external: #4A5568;
+  caption: "{channel} ${amount}";
+}
+
+relationship.TRANSFER {
+  color: #718096;
+}
+
+relationship.TRANSFER[channel = "WIRE"] {
+  color: #3182CE;
+  shaft-width: 3px;
+}
+
+relationship.TRANSFER[channel = "INTERNAL"] {
+  color: #DD6B20;
+  shaft-width: 3px;
+}
+
+relationship.TRANSFER[channel = "CASH"] {
+  color: #38A169;
+  shaft-width: 2px;
+}
+
+relationship.TRANSFER[channel = "SWIFT"] {
+  color: #805AD5;
+  shaft-width: 4px;
+}
+
+relationship.TRANSFER[channel = "POS"] {
+  color: #A0AEC0;
+  shaft-width: 1px;
+}
+
+relationship.TRANSFER[risk_flag = "true"] {
+  color: #E53E3E;
+  shaft-width: 5px;
+}

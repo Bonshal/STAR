@@ -1,0 +1,55 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Backend (Python)
+backend/__pycache__/
+backend/.venv/
+backend/venv/
+backend/env/
+backend/*.py[cod]
+backend/*$py.class
+backend/build/
+backend/dist/
+backend/wheels/
+backend/*.egg-info/
+backend/.pytest_cache/
+
+# Data and Models
+backend/*.csv
+backend/*.pth
+backend/uploads/
+
+# Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/build/
+frontend/logs/
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# Other
+*.local
