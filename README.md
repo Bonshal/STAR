@@ -3,85 +3,80 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-blue.svg" alt="Python Version"/>
   <img src="https://img.shields.io/badge/React-18+-61DAFB.svg?logo=react" alt="React Platform"/>
-  <img src="https://img.shields.io/badge/PyTorch-TGNN-EE4C2C.svg?logo=pytorch" alt="PyTorch Framework"/>
-  <img src="https://img.shields.io/badge/Neo4j-Graph_DB-008CC1.svg?logo=neo4j" alt="Neo4j Layer"/>
-  <img src="https://img.shields.io/badge/AWS-Bedrock%20LLMs-FF9900.svg?logo=amazonaws" alt="AWS Bedrock Hub"/>
+  <img src="https://img.shields.io/badge/PyTorch-Geometric-EE4C2C.svg?logo=pytorch" alt="PyTorch Framework"/>
+  <img src="https://img.shields.io/badge/Neo4j-Aura_Cloud-008CC1.svg?logo=neo4j" alt="Neo4j Layer"/>
 </p>
 
 ## 🚀 Overview
 
-The ** Spatial Temporal Automated Risk system(STAR)** system is an advanced Intelligent Fund Flow Tracking (IFFT) platform and Anti-Money Laundering (AML) simulator. It represents a paradigm shift from legacy, siloed, and reactive enterprise compliance systems (e.g., standard rule-based scenarios) to **Contextual Proactive Intelligence**.
+The **Spatial Temporal Automated Risk (STAR)** system is an advanced Anti-Money Laundering (AML) platform bridging the gap between cutting-edge Graph Machine Learning research and production-ready real-time infrastructure.
 
-By integrating **Temporal Graph Neural Networks (TGNNs)**, real-time graph visualization via **Neo4j**, and an **Agentic AML Orchestrator** powered by **AWS Bedrock / LLMs**, FCCI automatically flags complex typologies—ranging from rapid layering to circular fund routing—while fully resolving evidence and drafting Suspicious Activity Reports (SARs) via AI.
+By integrating **Temporal Graph Neural Networks (TGNNs)** with **Neo4j Aura** cloud databases, STAR automatically flags complex typologies—ranging from rapid layering to circular fund routing—by evaluating the contextual "subgraph" of every transaction in real time.
 
-## ✨ Core Features
+This repository contains both the **Model Training Pipeline** used to train the TGNN on the IBM AML dataset, and the **Real-Time Inference App** built to simulate live production traffic.
 
-*   **Agentic Investigation Hub:** An LLM-orchestrated agent loop (utilizing models like Claude via Bedrock or Hugging Face APIs) that dynamically paginates through network evidence, explores fund flows logically, and auto-drafts SAR narratives.
-*   **Temporal Graph Processing (TGNN):** A hybrid engine measuring both the spatial network topology (who connects to whom) and temporal velocity (how fast funds are moving), overcoming the blind spots of singular rule-based detection.
-*   **Real-Time Explorable Subgraphs:** Uses Neo4j to store relational memory. Transactions are modeled as nodes, letting investigators trace deep multi-hop "fund momentum" pathways visually.
-*   **Typology Detection:** Captures rapid layering, round-tripping, smurfing (structuring), and dormant account activation instantly.
-*   **High-Fidelity Command Center:** A sleek React/Vite/TypeScript frontend rendering high-performance force-directed graph UI (via WebSockets/Socket.io), enabling proactive intervention.
+## 🏗️ Repository Architecture
 
----
+1. **`/model` (TGNN Training Pipeline)**
+   Contains the complete PyTorch Geometric (PyG) pipeline used to train our AI model. 
+   - **`training.py` & `models.py`:** Implements the Hybrid Temporal GAT (GATe) architecture, utilizing both spatial message passing and temporal transaction features (time-deltas, ports).
+   - **`data_loading.py`:** Handles ingestion and graph batching of the IBM AML Synthetic dataset.
+   - **`checkpoint_tgnn_gat_v2.tar`:** The production-ready pre-trained weights yielding high ROC-AUC on fraud detection.
 
-## 🏗️ Architecture
+2. **`/backend` (Real-Time Inference Server)**
+   A FastAPI application simulating a high-throughput transaction stream.
+   - **k-hop Subgraph Extraction:** For every transaction, the backend executes a Cypher query against Neo4j Aura to extract a 2-hop neighborhood, dynamically constructing localized PyG tensors on the fly.
+   - **Human-In-The-Loop (HITL) Queue:** Instead of auto-resolving, transactions flagged with >50% fraud probability are persisted to Neo4j as `:Alert` nodes, awaiting analyst review.
+   - **`demo_server.py`:** The primary orchestrator handling WebSockets, Neo4j connections, and live PyTorch inference.
 
-1.  **Tier 1: Unified Data Fabric (Ingestion)**
-    Real-time streaming and ingestion of financial transfers, performing live identity resolution to create "Golden Entities."
-2.  **Tier 2: Graph Intelligence Engine (TGNN Core)**
-    Hybrid LSTM-GNN architecture that tracks "Risk Momentum Scores" across specific paths, assigning spatial and temporal weights to transactions.
-3.  **Tier 3: Agentic Detection Hub**
-    A Co-Investigator AI using conversational multi-turn workflows to justify alerts, trace poisoned paths, and offer SHAP/LIME-based insights under "Right to Explanation" framework.
+3. **`/frontend` (Investigator Dashboard)**
+   A React/Vite/TypeScript frontend rendering a high-performance force-directed graph UI (via `react-force-graph-2d`). 
+   - Live stream visualization of transactions and embedded fraud typologies.
+   - Integrated Case Management queue to review and escalate fraud alerts directly connected to the backend.
 
 ---
 
 ## 💻 Tech Stack
 
-*   **Backend:** Python, FastAPI, WebSockets (`socket.io`), PyTorch.
-*   **Frontend:** React, TypeScript, Vite, D3/Force-Graph.
-*   **Database Engine:** Neo4j (Graph logic & pathfinding queries).
-*   **AI/Inference:** LLMs (AWS Bedrock / Hugging Face Spaces routing), LangChain/Custom Agents.
+*   **Backend:** Python, FastAPI, WebSockets, PyTorch Geometric, Neo4j Python Driver.
+*   **Frontend:** React, TypeScript, Vite, Force-Graph.
+*   **Database Engine:** Neo4j Aura (Cloud managed graph logic & k-hop pathfinding).
 
 ---
 
-## ⚙️ Quick Start
+## ⚙️ Quick Start (Real-Time Demo)
 
-### 1. Prerequisites
-*   [Neo4j Desktop](https://neo4j.com/download/) (Ensure bolt is running on `bolt://localhost:7687`)
-*   Python 3.11+ and Node.js 18+
-
-### 2. Backend Setup
+### 1. Backend Setup
 ```bash
 cd backend
-python -m venv .venv
-source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
-pip install -r requirements.txt # (or using uv ecosystem)
+# Create and activate environment
+uv venv .venv
+.venv/Scripts/activate # Windows
+# Install dependencies
+uv pip install -r requirements.txt 
 
-# Generate synthetic transaction patterns (poisoned typologies)
-python generate_test_data.py
-
-# Launch the FastAPI orchestrator and Backend Engine
-uvicorn server:app --port 8000 --reload
+# Launch the FastAPI orchestrator
+python demo_server.py
 ```
 
-### 3. Frontend Setup
+### 2. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-*Navigate to `http://localhost:5173` to access the Investigator Command Center.*
+*Navigate to `http://localhost:5173` to access the Investigator Command Center. Click "START DEMO" to watch the real-time inference loop build the graph and flag fraud.*
 
 ---
 
-## 🧪 Validated Topologies (MVB Simulation)
+## 🧪 Model Training
 
-| Typology Pattern | Target State TGNN Approach | Prototype Cypher Validation |
-| :--- | :--- | :--- |
-| **Circular Flow** | Cycle-Detection Motifs | `MATCH (p)-[*2..5]->(p)` |
-| **Rapid Layering** | Temporal Momentum Analysis | `duration.between(in, out) < 30m` |
-| **Structuring** | Sequential Clustering | `$50k Vol via <$10k chunks` |
-| **Dormant Burst** | LSTM Anomaly Burst | `>180d Gap AND Z-Score > 3.0` |
+If you wish to retrain or fine-tune the model on cloud hardware (e.g., A100 instances):
+```bash
+cd model
+python training.py --dataset Small_LI --epochs 100 --batch_size 256
+```
+*Note: The model utilizes a custom Focal Loss implementation to heavily penalize false negatives on the highly imbalanced (1:1000) fraud dataset.*
 
 ---
 

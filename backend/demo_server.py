@@ -20,8 +20,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from neo4j import GraphDatabase
 import uvicorn
 
-# Add parent dir so we can import from TGNN_Training
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "TGNN_Training"))
+# Add parent dir so we can import from model
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "model"))
 from demo_scenario import build_demo_scenario, scenario_to_pyg_tensors, build_graph_json
 
 
@@ -112,7 +112,7 @@ EDGE_ID_MAP = {}
 
 def load_model():
     global MODEL
-    checkpoint_path = os.path.join(os.path.dirname(__file__), "..", "Multi-GNN", "models", "checkpoint_tgnn_gat_v2.tar")
+    checkpoint_path = os.path.join(os.path.dirname(__file__), "..", "model", "checkpoint_tgnn_gat_v2.tar")
     print("Loading GATe TGNN checkpoint...")
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     MODEL = GATe(num_features=1, num_gnn_layers=2, n_classes=2, n_hidden=64,
